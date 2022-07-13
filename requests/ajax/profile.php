@@ -1227,7 +1227,6 @@ Class Profile extends Aj {
     //get city from state iso2
     public function get_city()
     {
-         
         global $db;
         if (self::ActiveUser() == NULL) {
             $response = array(
@@ -1243,34 +1242,40 @@ Class Profile extends Aj {
         
         if(isset($_POST['country_code'])&&!empty($_POST['country_code']))
         {
-        //   $option = $db->where('country_code',Secure($_POST['country_code']) )->get('cities',null,array('name,id'));
-         $curl = curl_init();
-            $api_key = $db->where('option_name', 'countrystatecity_api_key')->get('options', null, array('option_value'));
-
-            curl_setopt_array($curl, array(
-                CURLOPT_URL => 'https://api.countrystatecity.in/v1/countries/' . $_POST['country_code'] . '/cities',
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_HTTPHEADER => array(
-                    'X-CSCAPI-KEY: ' . $api_key[0]['option_value']
-                ),
-            ));
-
-            $response = curl_exec($curl);
-            
-            $response = json_decode($response,true);
-            $array = array();
-            if(count($response)>0) {
-                $temp = array_unique(array_column($response, 'name'));
-                $unique_arr = array_intersect_key($response, $temp);
-                curl_close($curl);
-                foreach($unique_arr as $k =>$a){
-                    $array[$k] = json_decode(json_encode($a));
-                }
+            if($_POST['country_code'] == "RU"){
+                $option = $db->where('country_code',Secure($_POST['country_code']) )->get('cities',null,array('russian_language as name,id'));
+            }else{
+                $option = $db->where('country_code',Secure($_POST['country_code']) )->get('cities',null,array('name,id'));
             }
+
+         // $curl = curl_init();
+         //    $api_key = $db->where('option_name', 'countrystatecity_api_key')->get('options', null, array('option_value'));
+
+         //    curl_setopt_array($curl, array(
+         //        CURLOPT_URL => 'https://api.countrystatecity.in/v1/countries/' . $_POST['country_code'] . '/cities',
+         //        CURLOPT_RETURNTRANSFER => true,
+         //        CURLOPT_HTTPHEADER => array(
+         //            'X-CSCAPI-KEY: ' . $api_key[0]['option_value']
+         //        ),
+         //    ));
+
+         //    $response = curl_exec($curl);
+
+            // $response = json_decode($response,true);
+          // $option = $option;
+          //   $array = array();
+          //   if(count($response)>0) {
+          //       $temp = array_unique(array_column($response, 'name'));
+          //       $unique_arr = array_intersect_key($response, $temp);
+          //       curl_close($curl);
+          //       foreach($unique_arr as $k =>$a){
+          //           $array[$k] = json_decode(json_encode($a));
+          //       }
+          //   }
 
             $response = array(
                 'status' => 200,
-                'city' => $array
+                'city' => $option
             );
            echo json_encode($response);exit;
              

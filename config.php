@@ -3,14 +3,14 @@
 // MySQL Hostname
 $servername = "localhost";
 // MySQL Database User
-$dbusername = "loveojzu_loveojzu";
+$dbusername = "root";
 // MySQL Database Password
-$dbpassword = "Kmlink123";
+$dbpassword = "";
 // MySQL Database Name
-$dbname = "loveojzu_loveojzu";
+$dbname = "mangolia";
 
 // Site URL
-$site_url = "https://magnoliadates.com"; // e.g (http://example.com)
+$site_url = "http://localhost/mangolia/"; // e.g (http://example.com)
 
 $app = "QuickDating";
 $endpoint_v = "v1";

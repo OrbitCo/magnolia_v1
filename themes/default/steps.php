@@ -400,10 +400,13 @@
                                         <select id="country" name="country" searchable="<?php echo __( 'Search your country' );?>" data-errmsg="<?php echo __( 'Select your country.');?>" required>
                                             <option value="" disabled selected><?php echo __( 'Choose your country' );?></option>
                                             <?php
-                                           $country = $db->get('countries',null,array('name','iso2','phonecode'));
+                                           // $country = $db->get('countries',null,array('name','iso2','phonecode'));
                                           
-                                            foreach( $country as $key => $val ){
-                                                echo '<option value="'. $val['iso2'] .'" data-code="'. $val['phonecode'] .'">'. $val['name'] .'</option>';
+                                           //  foreach( $country as $key => $val ){
+                                           //      echo '<option value="'. $val['iso2'] .'" data-code="'. $val['phonecode'] .'">'. $val['name'] .'</option>';
+                                           //  }
+                                            foreach( Dataset::load('countries') as $key => $val ){
+                                                echo '<option value="'. $key .'" data-code="'. $val['isd'] .'"  '. ( ( $profile->country == $key ) ? 'selected' : '' ) .'>'. $val['name'] .'</option>';
                                             }
                                             ?>
                                         </select>

@@ -14,7 +14,7 @@ function SessionStart(){
         $cookieParams['domain'],
         false,
         true
-    );
+    ); 
     //session_name(strtolower($app));
     session_start();
 }
@@ -82,7 +82,12 @@ function GetActiveLang(){
 //    return $lang;
 
     global $config, $db;
-    $lang = $config->default_language;
+
+    if(isset($_COOKIE['activeLang']) && !empty($_COOKIE['activeLang']) && $_COOKIE['activeLang'] == 'english'){
+        $lang = 'english';
+    }else{
+        $lang = 'russian';
+    }
 
     if( isset($_GET['language']) && $_GET['language'] !== '' ){
         //$lang = Secure($_GET['language']);
@@ -129,12 +134,12 @@ function LoadLanguage() {
 //        }
 //    }
 
-    $result = $db->arrayBuilder()->get('langs',null,array('lang_key','english',$dafault_lang));
+    $result = $db->arrayBuilder()->get('langs',null,array('lang_key','russian',$dafault_lang));
     if (!empty($result)) {
         foreach ($result as $key => $val) {
             if(!empty($val['lang_key'])) {
                 if (is_null($val[$dafault_lang]) || $val[$dafault_lang] == '' || empty($val[$dafault_lang])) {
-                    $lang->{$val['lang_key']} = $val['english'];
+                    $lang->{$val['lang_key']} = $val['russian'];
                 } else {
                     $lang->{$val['lang_key']} = $val[$dafault_lang];
                 }
@@ -176,9 +181,9 @@ function __($key) {
 //            return $stringFromArray;
 //        }
 //    }
-    if((GetActiveLang() == 'english')) {
+    if((GetActiveLang() == 'russian')) {
         if($dev === true) {
-            $insert = $db->insert('langs', ['lang_key' => $stringFromArray, 'english' => secure($string)]);
+            $insert = $db->insert('langs', ['lang_key' => $stringFromArray, 'russian' => secure($string)]);
         }else{
             return '';
         }
@@ -4469,7 +4474,7 @@ function IsUserSpammer($user_id){
         return false;
     }
 }
-function LangsNamesFromDB($lang = 'english') {
+function LangsNamesFromDB($lang = 'russian') {
     global $conn, $wo;
     $data  = array();
     $query = mysqli_query($conn, "SHOW COLUMNS FROM `langs`");
